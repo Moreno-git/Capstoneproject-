@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../Laravel"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "../phpsite"
+		}
+	],
+	"settings": {}
+}
