@@ -5,40 +5,125 @@
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-0">Campaign Management</h1>
-            <p class="text-muted">Monitor and manage your campaigns</p>
+            <h1 class="h3 mb-0">Campaign Dashboard</h1>
+            <p class="text-muted">Overview of your campaign performance</p>
         </div>
-        <div>
-            <a href="{{ route('admin.campaigns.list') }}" class="btn btn-primary">
-                Manage Campaign
+        <div class="d-flex gap-2">
+            <a href="{{ route('admin.campaigns.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>New Campaign
+            </a>
+            <a href="{{ route('admin.campaigns.manage') }}" class="btn btn-outline-primary">
+                <i class="fas fa-list me-2"></i>Manage Campaigns
             </a>
         </div>
     </div>
 
-    <!-- Campaign Cards -->
+    <!-- Campaign Statistics -->
     <div class="row g-4 mb-4">
-        @foreach($campaigns as $campaign)
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0 me-3">
+                            <div class="rounded-circle bg-primary bg-opacity-10 p-3">
+                                <i class="fas fa-bullhorn text-primary fa-lg"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-1">Active Campaigns</h6>
+                            <h4 class="mb-0">{{ $campaigns->where('status', 'Ongoing')->count() }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0 me-3">
+                            <div class="rounded-circle bg-success bg-opacity-10 p-3">
+                                <i class="fas fa-hand-holding-heart text-success fa-lg"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-1">Total Donations</h6>
+                            <h4 class="mb-0">{{ $recentDonations->count() }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0 me-3">
+                            <div class="rounded-circle bg-info bg-opacity-10 p-3">
+                                <i class="fas fa-chart-line text-info fa-lg"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-1">Total Raised</h6>
+                            <h4 class="mb-0">₱{{ number_format($recentDonations->sum('amount'), 2) }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0 me-3">
+                            <div class="rounded-circle bg-warning bg-opacity-10 p-3">
+                                <i class="fas fa-users text-warning fa-lg"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-1">Total Donors</h6>
+                            <h4 class="mb-0">{{ $recentDonations->unique('donor_email')->count() }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Campaigns -->
+    <h5 class="mb-4">Active Campaigns</h5>
+    <div class="row g-4 mb-4">
+        @foreach($campaigns->where('status', 'Ongoing') as $campaign)
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="card-title mb-0">{{ $campaign->title }}</h5>
-                        <div class="rounded-pill px-3 py-1 {{ $campaign->status === 'Ongoing' ? 'bg-success-subtle text-success' : ($campaign->status === 'Paused' ? 'bg-warning-subtle text-warning' : 'bg-secondary-subtle text-secondary') }}">
+                        <span class="badge bg-{{ $campaign->status === 'Ongoing' ? 'success' : ($campaign->status === 'Paused' ? 'warning' : 'secondary') }}">
                             {{ $campaign->status }}
-                        </div>
+                        </span>
                     </div>
+                    <p class="text-muted small mb-3">{{ Str::limit($campaign->description, 100) }}</p>
                     <div class="mb-3">
-                        <label class="text-muted small mb-1">Progress</label>
                         <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="text-body-secondary">${{ number_format($campaign->current_amount, 0) }}</span>
-                            <span class="text-body-secondary">/ ${{ number_format($campaign->goal_amount, 0) }}</span>
+                            <span class="text-muted small">Progress</span>
+                            <span class="text-muted small">{{ round(($campaign->current_amount / $campaign->goal_amount) * 100) }}%</span>
                         </div>
                         <div class="progress" style="height: 6px;">
-                            <div class="progress-bar {{ $campaign->status === 'Ongoing' ? 'bg-success' : ($campaign->status === 'Paused' ? 'bg-warning' : 'bg-secondary') }}" 
+                            <div class="progress-bar bg-success" 
                                  role="progressbar" 
                                  style="width: {{ ($campaign->current_amount / $campaign->goal_amount) * 100 }}%">
                             </div>
                         </div>
+                        <div class="d-flex justify-content-between align-items-center mt-1">
+                            <span class="text-muted small">₱{{ number_format($campaign->current_amount, 2) }}</span>
+                            <span class="text-muted small">₱{{ number_format($campaign->goal_amount, 2) }}</span>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <a href="{{ route('admin.campaigns.show', $campaign) }}" class="btn btn-sm btn-outline-primary">
+                            View Details
+                        </a>
                     </div>
                 </div>
             </div>
@@ -48,50 +133,58 @@
 
     <!-- Recent Donations -->
     <div class="card border-0 shadow-sm">
-        <div class="card-header bg-white py-3">
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
             <h5 class="card-title mb-0">Recent Donations</h5>
+            <a href="{{ route('admin.donations.index') }}" class="btn btn-sm btn-outline-primary">
+                View All
+            </a>
         </div>
-        <div class="card-body">
+        <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
-                    <thead>
+                    <thead class="bg-light">
                         <tr>
-                            <th>Donor</th>
+                            <th class="ps-4">Donor</th>
                             <th>Campaign</th>
                             <th>Amount</th>
                             <th>Date</th>
-                            <th>Status</th>
+                            <th class="pe-4">Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($recentDonations as $donation)
+                        @forelse($recentDonations as $donation)
                         <tr>
-                            <td>
+                            <td class="ps-4">
                                 <div class="d-flex align-items-center">
-                                    @if($donation->donor_avatar)
-                                        <img src="{{ Storage::url($donation->donor_avatar) }}" 
-                                             class="rounded-circle me-2"
-                                             width="32" height="32"
-                                             alt="{{ $donation->donor_name }}">
-                                    @else
-                                        <div class="rounded-circle bg-secondary-subtle me-2 d-flex align-items-center justify-content-center" 
-                                             style="width: 32px; height: 32px;">
-                                            <i class="fas fa-user text-secondary"></i>
-                                        </div>
-                                    @endif
-                                    {{ $donation->donor_name }}
+                                    <div class="rounded-circle bg-secondary-subtle me-2 d-flex align-items-center justify-content-center" 
+                                         style="width: 32px; height: 32px;">
+                                        <i class="fas fa-user text-secondary"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-medium">{{ $donation->donor_name }}</div>
+                                        <div class="small text-muted">{{ $donation->donor_email }}</div>
+                                    </div>
                                 </div>
                             </td>
-                            <td>{{ $donation->campaign_title }}</td>
-                            <td>${{ number_format($donation->amount, 2) }}</td>
-                            <td>{{ $donation->created_at->format('M d, Y') }}</td>
+                            <td>{{ $donation->campaign->title }}</td>
+                            <td>₱{{ number_format($donation->amount, 2) }}</td>
                             <td>
-                                <span class="badge bg-success-subtle text-success">
-                                    {{ $donation->status }}
+                                <div>{{ $donation->created_at->format('M d, Y') }}</div>
+                                <div class="small text-muted">{{ $donation->created_at->format('h:i A') }}</div>
+                            </td>
+                            <td class="pe-4">
+                                <span class="badge bg-{{ $donation->status === 'completed' ? 'success' : 'warning' }}">
+                                    {{ ucfirst($donation->status) }}
                                 </span>
                             </td>
                         </tr>
-                        @endforeach
+                        @empty
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-muted">
+                                No recent donations found
+                            </td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

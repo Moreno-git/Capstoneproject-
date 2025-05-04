@@ -1,0 +1,227 @@
+/* Donation Panel Styles */
+.donation-table-container {
+    overflow-x: auto;
+    margin: 0;
+    border-radius: 0.5rem;
+    /* Custom scrollbar for Webkit browsers */
+    &::-webkit-scrollbar {
+        height: 6px;
+    }
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 3px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+}
+
+.donation-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 0;
+}
+
+.donation-table th,
+.donation-table td {
+    padding: 1.25rem 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+    white-space: nowrap;
+}
+
+/* Column-specific widths and alignment */
+.donation-table th:nth-child(1),
+.donation-table td:nth-child(1) {
+    padding-left: 1.5rem;
+    min-width: 250px; /* Donor column */
+}
+
+.donation-table th:nth-child(2),
+.donation-table td:nth-child(2) {
+    min-width: 120px; /* Type column */
+}
+
+.donation-table th:nth-child(3),
+.donation-table td:nth-child(3) {
+    min-width: 180px; /* Amount/Item column */
+}
+
+.donation-table th:nth-child(4),
+.donation-table td:nth-child(4) {
+    min-width: 160px; /* Campaign column */
+}
+
+.donation-table th:nth-child(5),
+.donation-table td:nth-child(5) {
+    min-width: 120px; /* Status column */
+}
+
+.donation-table th:nth-child(6),
+.donation-table td:nth-child(6) {
+    min-width: 150px; /* Date column */
+}
+
+.donation-table th:last-child,
+.donation-table td:last-child {
+    padding-right: 1.5rem;
+    min-width: 100px; /* Actions column */
+}
+
+/* Header styling */
+.donation-table thead th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #344767;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.025em;
+}
+
+.donation-table thead th:first-child {
+    border-top-left-radius: 0.5rem;
+}
+
+.donation-table thead th:last-child {
+    border-top-right-radius: 0.5rem;
+}
+
+/* Cell content styling */
+.donation-table .avatar-sm {
+    width: 36px;
+    height: 36px;
+}
+
+.donation-table .fw-medium {
+    font-weight: 500;
+    color: #344767;
+}
+
+.donation-table .small {
+    font-size: 0.875rem;
+}
+
+.donation-table .text-muted {
+    color: #6c757d !important;
+}
+
+/* Badge styling */
+.donation-table .badge {
+    padding: 0.5em 0.75em;
+    font-weight: 500;
+    font-size: 0.75rem;
+}
+
+/* Hover effect */
+.donation-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Empty state styling */
+.donation-table .text-center.py-4 {
+    padding: 3rem !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .donation-table th,
+    .donation-table td {
+        padding: 1rem 0.75rem;
+    }
+
+    .donation-table th:nth-child(1),
+    .donation-table td:nth-child(1) {
+        padding-left: 1rem;
+        min-width: 200px;
+    }
+
+    .donation-table th:last-child,
+    .donation-table td:last-child {
+        padding-right: 1rem;
+    }
+}
+
+/* Card footer styling */
+.donation-card .card-footer {
+    padding: 1rem 1.5rem;
+    background: transparent;
+    border-top: 1px solid #f0f0f0;
+}
+
+/* Pagination styling */
+.pagination {
+    margin: 0;
+    gap: 0.25rem;
+}
+
+.page-link {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+    border: none;
+    color: #344767;
+    font-weight: 500;
+}
+
+.page-item.active .page-link {
+    background-color: #007bff;
+    color: white;
+}
+
+.page-item.disabled .page-link {
+    color: #6c757d;
+    background-color: transparent;
+}
+
+/* Card styles */
+.donation-card {
+    background: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
+}
+
+.donation-card .card-header {
+    background: transparent;
+    border-bottom: 1px solid #e9ecef;
+    padding: 1.25rem;
+}
+
+.donation-card .card-body {
+    padding: 1.25rem;
+}
+
+/* Search and filter container */
+.search-filter-container {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.search-filter-container .form-control {
+    border-radius: 0.5rem;
+    border: 1px solid #e9ecef;
+    padding: 0.5rem 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .donation-table th,
+    .donation-table td {
+        padding: 0.75rem;
+    }
+    
+    .search-filter-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .badge {
+        padding: 0.35rem 0.5rem;
+    }
+} 

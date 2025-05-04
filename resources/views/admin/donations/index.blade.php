@@ -4,14 +4,14 @@
 <div class="container-fluid py-4">
     <!-- Page Title -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Donation Management</h2>
+        <h2 class="h3 mb-0">Donation Management</h2>
     </div>
 
     <!-- Summary Cards -->
     <div class="row mb-4">
         <!-- Monetary Card -->
         <div class="col-xl-3 col-sm-6 mb-4">
-            <div class="card border-0 shadow-sm h-100">
+            <div class="donation-card">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0 me-3">
@@ -34,7 +34,7 @@
 
         <!-- Non-Monetary Card -->
         <div class="col-xl-3 col-sm-6 mb-4">
-            <div class="card border-0 shadow-sm h-100">
+            <div class="donation-card">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0 me-3">
@@ -57,7 +57,7 @@
 
         <!-- Campaign Card -->
         <div class="col-xl-3 col-sm-6 mb-4">
-            <div class="card border-0 shadow-sm h-100">
+            <div class="donation-card">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0 me-3">
@@ -80,7 +80,7 @@
 
         <!-- Total Donors Card -->
         <div class="col-xl-3 col-sm-6 mb-4">
-            <div class="card border-0 shadow-sm h-100">
+            <div class="donation-card">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0 me-3">
@@ -103,10 +103,10 @@
     </div>
 
     <!-- Recent Donations -->
-    <div class="card border-0 shadow-sm mb-4">
-        <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center">
+    <div class="donation-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="card-title mb-0">Recent Donations</h5>
-            <div class="d-flex gap-2">
+            <div class="search-filter-container">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search donor..." id="donorSearch">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
@@ -124,10 +124,10 @@
                 <a href="{{ route('admin.donations.all') }}" class="btn btn-primary">Show All</a>
             </div>
         </div>
-        <div class="card-body p-0">
+        <div class="donation-table-container">
             <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead class="bg-light">
+                <table class="donation-table">
+                    <thead>
                         <tr>
                             <th>Donor Name</th>
                             <th>Email</th>
@@ -135,12 +135,12 @@
                             <th>Amount/Item</th>
                             <th>Status</th>
                             <th>Date</th>
-                            <th>Actions</th>
+                            <th class="text-end">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($donations as $donation)
-                        <tr class="donation-row" data-href="{{ route('admin.donations.show', $donation) }}">
+                        <tr>
                             <td>{{ $donation->donor_name }}</td>
                             <td>{{ $donation->donor_email }}</td>
                             <td>
@@ -150,9 +150,10 @@
                             </td>
                             <td>
                                 @if($donation->type === 'monetary')
-                                    ₱{{ number_format($donation->amount, 2) }}
+                                    <span class="fw-semibold">₱{{ number_format($donation->amount, 2) }}</span>
                                 @else
-                                    {{ $donation->item_name }} ({{ $donation->quantity }} units)
+                                    <span class="fw-semibold">{{ $donation->item_name }}</span>
+                                    <small class="text-muted d-block">{{ $donation->quantity }} units</small>
                                 @endif
                             </td>
                             <td>
@@ -160,13 +161,16 @@
                                     {{ ucfirst($donation->status) }}
                                 </span>
                             </td>
-                            <td>{{ $donation->created_at?->format('M d, Y') ?? 'N/A' }}</td>
                             <td>
+                                <span>{{ $donation->created_at?->format('M d, Y') ?? 'N/A' }}</span>
+                                <small class="text-muted d-block">{{ $donation->created_at?->format('h:i A') ?? '' }}</small>
+                            </td>
+                            <td class="text-end">
                                 <div class="dropdown">
                                     <button class="btn btn-sm btn-light" data-bs-toggle="dropdown">
                                         <i class="fas fa-ellipsis-v"></i>
                                     </button>
-                                    <ul class="dropdown-menu">
+                                    <ul class="dropdown-menu dropdown-menu-end">
                                         <li>
                                             <a class="dropdown-item" href="{{ route('admin.donations.show', $donation) }}">
                                                 <i class="fas fa-eye me-2"></i> View Details
@@ -250,14 +254,7 @@
 </div>
 
 @push('styles')
-<style>
-    .donation-row {
-        cursor: pointer;
-    }
-    .donation-row:hover {
-        background-color: rgba(0, 123, 255, 0.05);
-    }
-</style>
+<link rel="stylesheet" href="{{ asset('css/donation-panel.css') }}">
 @endpush
 
 @push('scripts')

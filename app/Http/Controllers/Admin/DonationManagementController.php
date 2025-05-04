@@ -246,7 +246,7 @@ class DonationManagementController extends Controller
     public function show(Donation $donation)
     {
         $donation->load(['campaign']);
-        return view('admin.donations.show', compact('donation'));
+        return view('auth.admin.donations.show', compact('donation'));
     }
 
     /**

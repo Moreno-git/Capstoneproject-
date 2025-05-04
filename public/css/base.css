@@ -1,0 +1,121 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+.main-content {
+    margin-top: 70px;
+    padding: 2rem;
+    min-height: calc(100vh - 70px);
+    transition: all 0.3s ease;
+}
+
+.top-navbar {
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,.08);
+    height: 70px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+
+/* Brand styling */
+.brand-name {
+    font-weight: 600;
+    font-size: 1.4rem;
+    color: #007bff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand-name:hover {
+    color: #0056b3;
+    text-decoration: none;
+}
+
+/* Profile dropdown styling */
+.profile-dropdown {
+    cursor: pointer;
+}
+
+.profile-dropdown img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.dropdown-item {
+    padding: .75rem 1.5rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dropdown-item i {
+    font-size: 1.1rem;
+    width: 24px;
+}
+
+/* Container adjustments */
+.container-fluid {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+/* Table adjustments */
+.table {
+    margin-bottom: 0;
+}
+
+.table td, 
+.table th {
+    padding: 1rem;
+    white-space: nowrap;
+}
+
+.table-responsive {
+    margin: 0;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+/* Page title styling */
+.page-title {
+    color: #333;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 1rem;
+}
+
+.page-title h1 {
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767.98px) {
+    .page-title {
+        display: none;
+    }
+    
+    .main-content {
+        padding: 1rem;
+    }
+} 

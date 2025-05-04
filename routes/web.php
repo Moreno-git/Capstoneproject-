@@ -45,8 +45,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Campaign Management Routes
         Route::prefix('campaigns')->name('campaigns.')->group(function () {
-            Route::get('/', [AdminCampaignController::class, 'index'])->name('list');
-            Route::get('/dashboard', [AdminCampaignController::class, 'dashboard'])->name('dashboard');
+            Route::get('/', [AdminCampaignController::class, 'dashboard'])->name('dashboard');
+            Route::get('/manage', [AdminCampaignController::class, 'index'])->name('manage');
             Route::get('/create', [AdminCampaignController::class, 'create'])->name('create');
             Route::post('/', [AdminCampaignController::class, 'store'])->name('store');
             Route::get('/{campaign}', [AdminCampaignController::class, 'show'])->name('show');
@@ -67,11 +67,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
         
         // Calendar routes
-        Route::controller(CalendarController::class)->group(function () {
-            Route::get('/calendar', 'index')->name('calendar.index');
-            Route::post('/calendar', 'store')->name('calendar.store');
-            Route::put('/calendar/{campaign}', 'update')->name('calendar.update');
-            Route::delete('/calendar/{campaign}', 'destroy')->name('calendar.destroy');
+        Route::prefix('calendar')->name('calendar.')->group(function () {
+            Route::get('/', [CalendarController::class, 'index'])->name('index');
+            Route::post('/', [CalendarController::class, 'store'])->name('store');
+            Route::put('/{campaign}', [CalendarController::class, 'update'])->name('update');
+            Route::delete('/{campaign}', [CalendarController::class, 'destroy'])->name('destroy');
         });
 
         // Category routes

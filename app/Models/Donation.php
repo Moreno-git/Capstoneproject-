@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Donation extends Model
 {
     protected $fillable = [
+        'donor_id',
         'campaign_id',
         'donor_name',
         'donor_email',
@@ -41,6 +42,14 @@ class Donation extends Model
     public function campaign(): BelongsTo
     {
         return $this->belongsTo(Campaign::class);
+    }
+
+    /**
+     * Get the donor that this donation belongs to
+     */
+    public function donor(): BelongsTo
+    {
+        return $this->belongsTo(Donor::class);
     }
 
     /**
@@ -98,13 +107,42 @@ class Donation extends Model
     {
         parent::boot();
 
-        // Ensure created_at and updated_at are set when creating a new donation
+        // When creating a donation
         static::creating(function ($donation) {
             if (!$donation->created_at) {
                 $donation->created_at = now();
             }
             if (!$donation->updated_at) {
                 $donation->updated_at = now();
+            }
+
+            // Try to find or create donor
+            if (!$donation->donor_id && $donation->donor_email) {
+                $donor = Donor::firstOrCreate(
+                    ['email' => $donation->donor_email],
+                    [
+                        'name' => $donation->donor_name,
+                        'phone' => $donation->donor_phone,
+                        'is_anonymous' => $donation->is_anonymous
+                    ]
+                );
+                $donation->donor_id = $donor->id;
+            }
+        });
+
+        // After donation is created or updated
+        static::saved(function ($donation) {
+            // Update donor statistics if we have a donor
+            if ($donation->donor_id) {
+                $donation->donor->updateStatistics();
+            }
+        });
+
+        // Before donation is deleted
+        static::deleting(function ($donation) {
+            // Update donor statistics if we have a donor
+            if ($donation->donor_id) {
+                $donation->donor->updateStatistics();
             }
         });
     }
