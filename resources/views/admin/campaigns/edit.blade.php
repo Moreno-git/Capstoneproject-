@@ -10,13 +10,13 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="{{ route('admin.campaigns.list') }}">Campaigns</a>
+                        <a href="{{ route('admin.campaigns.dashboard') }}">Campaigns</a>
                     </li>
                     <li class="breadcrumb-item active">Edit</li>
                 </ol>
             </nav>
         </div>
-        <a href="{{ route('admin.campaigns.list') }}" class="btn btn-outline-primary">
+        <a href="{{ route('admin.campaigns.dashboard') }}" class="btn btn-outline-primary">
             <i class="fas fa-arrow-left me-2"></i> Back to Campaigns
         </a>
     </div>
@@ -146,7 +146,7 @@
                 </div>
 
                 <div class="d-flex justify-content-end gap-2 mt-4">
-                    <a href="{{ route('admin.campaigns.list') }}" class="btn btn-light">Cancel</a>
+                    <a href="{{ route('admin.campaigns.dashboard') }}" class="btn btn-light">Cancel</a>
                     <button type="submit" class="btn btn-primary">Update Campaign</button>
                 </div>
             </form>

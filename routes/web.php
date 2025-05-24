@@ -10,11 +10,10 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\Admin\DonationManagementController;
 use App\Http\Controllers\Admin\CampaignController as AdminCampaignController;
+use App\Http\Controllers\UrgentFundsController;
 
 // Public Routes
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [AdminAuthController::class, 'showLoginForm']);
 
 
 // Public Donation Routes
@@ -88,6 +87,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::prefix('reports')->name('reports.')->group(function () {
             Route::get('/', [AdminReportController::class, 'index'])->name('index');
             Route::get('/export', [AdminReportController::class, 'export'])->name('export');
+        });
+
+        // Urgent Funds routes
+        Route::prefix('urgent-funds')->name('urgent-funds.')->group(function () {
+            Route::get('/', [UrgentFundsController::class, 'index'])->name('index');
+            Route::get('/create', [UrgentFundsController::class, 'create'])->name('create');
+            Route::post('/', [UrgentFundsController::class, 'store'])->name('store');
+            Route::get('/{campaign}/edit', [UrgentFundsController::class, 'edit'])->name('edit');
+            Route::put('/{campaign}', [UrgentFundsController::class, 'update'])->name('update');
+            Route::delete('/{campaign}', [UrgentFundsController::class, 'destroy'])->name('destroy');
         });
     });
 });

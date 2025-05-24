@@ -4,14 +4,14 @@
 <div class="container-fluid px-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3">Create Campaign</h1>
-        <a href="{{ route('admin.campaigns.list') }}" class="btn btn-outline-primary">
+        <a href="{{ route('admin.campaigns.dashboard') }}" class="btn btn-outline-primary">
             <i class="fas fa-arrow-left me-2"></i> Back to Campaigns
         </a>
     </div>
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('admin.campaigns.list') }}">Campaigns</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.campaigns.dashboard') }}">Campaigns</a></li>
             <li class="breadcrumb-item active">Create New Campaign</li>
         </ol>
     </nav>
@@ -46,7 +46,7 @@
                 <div class="mb-4">
                     <label for="description" class="form-label">Description</label>
                     <textarea class="form-control @error('description') is-invalid @enderror" 
-                              id="description" name="description" rows="3" required>{{ old('description') }}</textarea>
+                              id="description" name="description" rows="4" required>{{ old('description') }}</textarea>
                     @error('description')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -55,79 +55,82 @@
                 <!-- Type -->
                 <div class="mb-4">
                     <label for="type" class="form-label">Campaign Type</label>
-                    <input type="text" class="form-control @error('type') is-invalid @enderror" 
-                           id="type" name="type" value="{{ old('type') }}" 
-                           placeholder="e.g. Feeding Program" required>
+                    <select class="form-select @error('type') is-invalid @enderror" 
+                            id="type" name="type" required>
+                        <option value="">Select Type</option>
+                        <option value="regular" {{ old('type') === 'regular' ? 'selected' : '' }}>Regular</option>
+                        <option value="featured" {{ old('type') === 'featured' ? 'selected' : '' }}>Featured</option>
+                        <option value="emergency" {{ old('type') === 'emergency' ? 'selected' : '' }}>Emergency</option>
+                    </select>
                     @error('type')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
 
-                <!-- Status -->
+                <!-- Goal Amount -->
                 <div class="mb-4">
-                    <label for="status" class="form-label">Status</label>
-                    <select class="form-select @error('status') is-invalid @enderror" 
-                            id="status" name="status" required>
-                        <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active</option>
-                        <option value="paused" {{ old('status') == 'paused' ? 'selected' : '' }}>Paused</option>
-                    </select>
-                    @error('status')
+                    <label for="goal_amount" class="form-label">Goal Amount</label>
+                    <div class="input-group">
+                        <span class="input-group-text">₱</span>
+                        <input type="number" step="0.01" min="0" 
+                               class="form-control @error('goal_amount') is-invalid @enderror" 
+                               id="goal_amount" name="goal_amount" 
+                               value="{{ old('goal_amount') }}" required>
+                    </div>
+                    @error('goal_amount')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
 
-                <div class="row">
-                    <!-- Goal Amount -->
-                    <div class="col-md-6 mb-4">
-                        <label for="goal_amount" class="form-label">Goal Amount (PHP)</label>
-                        <input type="number" class="form-control @error('goal_amount') is-invalid @enderror" 
-                               id="goal_amount" name="goal_amount" value="{{ old('goal_amount') }}" 
-                               placeholder="e.g. 50000" required>
-                        @error('goal_amount')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <!-- Initial Funds -->
-                    <div class="col-md-6 mb-4">
-                        <label for="funds_raised" class="form-label">Initial Funds (PHP)</label>
-                        <input type="number" class="form-control @error('funds_raised') is-invalid @enderror" 
-                               id="funds_raised" name="funds_raised" value="{{ old('funds_raised', 0) }}" required>
-                        @error('funds_raised')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                <!-- Start Date -->
+                <div class="mb-4">
+                    <label for="start_date" class="form-label">Start Date</label>
+                    <input type="date" class="form-control @error('start_date') is-invalid @enderror" 
+                           id="start_date" name="start_date" 
+                           value="{{ old('start_date', date('Y-m-d')) }}" required>
+                    @error('start_date')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
-                <div class="row">
-                    <!-- Start Date -->
-                    <div class="col-md-6 mb-4">
-                        <label for="start_date" class="form-label">Start Date</label>
-                        <input type="date" class="form-control @error('start_date') is-invalid @enderror" 
-                               id="start_date" name="start_date" value="{{ old('start_date') }}" required>
-                        @error('start_date')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <!-- End Date -->
-                    <div class="col-md-6 mb-4">
-                        <label for="end_date" class="form-label">End Date</label>
-                        <input type="date" class="form-control @error('end_date') is-invalid @enderror" 
-                               id="end_date" name="end_date" value="{{ old('end_date') }}" required>
-                        @error('end_date')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                <!-- End Date -->
+                <div class="mb-4">
+                    <label for="end_date" class="form-label">End Date</label>
+                    <input type="date" class="form-control @error('end_date') is-invalid @enderror" 
+                           id="end_date" name="end_date" 
+                           value="{{ old('end_date', date('Y-m-d', strtotime('+30 days'))) }}" required>
+                    @error('end_date')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
-                <!-- Form Actions -->
-                <div class="d-flex gap-2 justify-content-end">
-                    <a href="{{ route('admin.campaigns.list') }}" class="btn btn-light">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Save Campaign</button>
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="{{ route('admin.campaigns.dashboard') }}" class="btn btn-light">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Create Campaign</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Validate end date is after start date
+    const startDate = document.getElementById('start_date');
+    const endDate = document.getElementById('end_date');
+
+    function validateDates() {
+        if (startDate.value && endDate.value && startDate.value >= endDate.value) {
+            endDate.setCustomValidity('End date must be after start date');
+        } else {
+            endDate.setCustomValidity('');
+        }
+    }
+
+    startDate.addEventListener('change', validateDates);
+    endDate.addEventListener('change', validateDates);
+});
+</script>
+@endpush
 @endsection

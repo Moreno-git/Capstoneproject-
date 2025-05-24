@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Create Urgent Campaign')
 
@@ -20,12 +20,12 @@
                     <textarea name="description" id="description" class="form-control" rows="4">{{ old('description') }}</textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="goal" class="form-label">Goal Amount (₱)</label>
-                    <input type="number" name="goal" id="goal" class="form-control" value="{{ old('goal') }}" min="0" step="0.01" required>
+                    <label for="goal_amount" class="form-label">Goal Amount (₱)</label>
+                    <input type="number" name="goal_amount" id="goal_amount" class="form-control" value="{{ old('goal_amount') }}" min="0" step="0.01" required>
                 </div>
                 <div class="mb-3">
-                    <label for="raised" class="form-label">Raised Amount (₱)</label>
-                    <input type="number" name="raised" id="raised" class="form-control" value="{{ old('raised', 0) }}" min="0" step="0.01">
+                    <label for="funds_raised" class="form-label">Raised Amount (₱)</label>
+                    <input type="number" name="funds_raised" id="funds_raised" class="form-control" value="{{ old('funds_raised', 0) }}" min="0" step="0.01">
                 </div>
                 <button type="submit" class="btn btn-primary">
                     <i class="fas fa-save"></i> Save Campaign
